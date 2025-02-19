@@ -28,19 +28,19 @@ window.config(padx=30, pady=30, bg=BG_YELLOW)
 # Title label
 title_label = Label(text="Pitch-Perfect",fg="#6495ED", font=("Showcard Gothic", 96))
 title_label.config(padx=30, pady=30, bg=BG_YELLOW)
-title_label.place(relx=.5, rely=.02, anchor=CENTER)
+title_label.place(relx=0.5, rely=0.02, anchor=CENTER)
 
 #Notes label
 notes_string = ""
 notes_label = Label(text="Notes:"+notes_string, font=("Magneto", 48))
 notes_label.config(padx=30, pady=30, bg=BG_YELLOW)
-notes_label.place(relx=.2, rely=.2, anchor=CENTER)
+notes_label.place(relx=0.2, rely=0.2, anchor=CENTER)
 
 # Scale label
 scale_string = ""
 scale_label = Label(text="Scale:"+scale_string, font=("Magneto", 48))
 scale_label.config(padx=30, pady=30, bg=BG_YELLOW)
-scale_label.place(relx=.2, rely=.4, anchor=CENTER)
+scale_label.place(relx=0.2, rely=0.4, anchor=CENTER)
 
 #Create button
 create_button = Button(text="Create", font=("Magneto", 30), command=create_button_clicked)
