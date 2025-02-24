@@ -65,3 +65,6 @@ def create_button_clicked():
 def play_button_clicked():
     pass
 
+def submit_button_clicked():
+    pass
+
