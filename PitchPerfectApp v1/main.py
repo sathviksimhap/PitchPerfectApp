@@ -28,6 +28,10 @@ modes = {
     "hard": 3
 }
 
+answer_status = ["Wrong!", "Almost!", "Correct!"]
+
+colours = ["red", "yellow", "green"]
+
 # Global Variables
 
 question = {"notes": [], "names": []}
@@ -40,7 +44,7 @@ def get_rand_key():
     return choice(notes_list)
 
 def new_scale(key="", mode ="easy"):
-    if not key:
+    if key == "Random":
         key = get_rand_key()
 
     start_scale = randint(0,1)
@@ -72,7 +76,7 @@ def gen_question(length = 3):
         answers.append(notes_list[note % 12])
 
     question["notes"] = questions
-    question["names "] = answers
+    question["names"] = answers
 
 def play_question():
     notes = question["notes"]
@@ -85,11 +89,34 @@ def play_question():
         for note in notes:
             piano.play_note(note, 1, 1)
 
+def check_answer(answer):
+    if answer == question["names"]: return 2
+
+    relative_answer = []
+    for note in answer:
+        relative_answer.append(notes_freq[note][0])
+    relative_question = []
+    for note in question["names"]:
+        relative_question.append(notes_freq[note][0])
+
+    relative = []
+    i = 0
+    while i < len(relative_question):
+        relative.append(relative_question[i] - relative_answer[i])
+        i+=1
+
+    check = all(x == relative[0] for x in relative)
+
+    if check: return 1
+    else: return 0
+
 def create_button_clicked():
-    new_scale()
+    key = default_scale_menu_value.get()
+    new_scale(key)
     gen_question()
     play_button.config(fg="Green")
-    scale_label.config(text="Scale: "+ scale["key"])
+    correct_label.config(text="")
+    print("Question:", question["names"])
 
 def play_button_clicked():
     if question["notes"]: play_question()
@@ -97,7 +124,15 @@ def play_button_clicked():
 
 def submit_button_clicked():
     user_answer = notes_input.get()
-    print(user_answer)
+    user_answer = user_answer.upper()
+    user_answer = user_answer.split()
+    notes_input.delete(0, END)
+
+    check = check_answer(user_answer)
+    correct_label.config(text=answer_status[check], fg=colours[check])
+
+    print("user_answer:", user_answer)
+    print("check", check)
 
 ############################################UI##################################
 
@@ -128,11 +163,16 @@ default_scale_menu_value.set("Random")
 
 scale_menu_options = ["Random"] + notes_list
 scale_menu = OptionMenu(window, default_scale_menu_value, *scale_menu_options)
-scale_menu.config(width=10, padx=10, pady=10, bg=DARK_THEME, fg=WHITE_BUTTON_TEXT, font=("Agency FB", 24))
-scale_menu.place(relx=0.25, rely=0.25, anchor=CENTER)
+scale_menu.config(width=8, padx=10, pady=10, bg=DARK_THEME, fg=WHITE_BUTTON_TEXT, font=FONT)
+scale_menu.place(relx=0.27, rely=0.25, anchor=CENTER)
 
 dropdown_menu = scale_menu["menu"]
 dropdown_menu.config(font=("Agency FB", 24))
+
+#Correct Label
+correct_label = Label(text="", fg=WHITE_BUTTON_TEXT, font=("Agency FB", 96))
+correct_label.config(width=20, padx=10, pady=10, bg=DARK_THEME)
+correct_label.place(relx=0.2, rely=0.8, anchor=CENTER)
 
 #Create button
 create_button = Button(text="New Question", fg=WHITE_BUTTON_TEXT, font=FONT, command=create_button_clicked)
