@@ -39,7 +39,10 @@ def get_rand_key():
     global notes_list
     return choice(notes_list)
 
-def get_scale(key=get_rand_key(), mode = "easy"):
+def new_scale(key="", mode ="easy"):
+    if not key:
+        key = get_rand_key()
+
     start_scale = randint(0,1)
     note = notes_freq[key][start_scale]
 
@@ -83,8 +86,10 @@ def play_question():
             piano.play_note(note, 1, 1)
 
 def create_button_clicked():
-    get_scale()
+    new_scale()
     gen_question()
+    play_button.config(fg="Green")
+    scale_label.config(text="Scale: "+ scale["key"])
 
 def play_button_clicked():
     if question["notes"]: play_question()
@@ -93,18 +98,6 @@ def play_button_clicked():
 def submit_button_clicked():
     user_answer = notes_input.get()
     print(user_answer)
-
-
-
-
-# while True:
-#     n = input()
-#     if n == "0":
-#         break
-#     if n == "2":
-#         print(question["names"])
-#     else:
-#         play_question(question)
 
 ############################################UI##################################
 
@@ -124,26 +117,31 @@ title_label = Label(text="Pitch-Perfect",fg=WHITE_BUTTON_TEXT, font=("Showcard G
 title_label.config(padx=30, pady=30, bg=DARK_THEME)
 title_label.place(relx=0.5, rely=0.02, anchor=CENTER)
 
-#Notes label
-notes_string = ""
-notes_label = Label(text="Notes:"+notes_string, fg=WHITE_BUTTON_TEXT, font=FONT)
-notes_label.config(width=20, padx=30, pady=30, bg=DARK_THEME)
-notes_label.place(relx=0.15, rely=0.2, anchor=CENTER)
-
 # Scale label
-scale_string = ""
-scale_label = Label(text="Scale:"+scale_string, fg=WHITE_BUTTON_TEXT, font=FONT)
-scale_label.config(width=20, padx=30, pady=30, bg=DARK_THEME)
-scale_label.place(relx=0.15, rely=0.8, anchor=CENTER)
+scale_label = Label(text="Scale:", fg=WHITE_BUTTON_TEXT, font=FONT)
+scale_label.config(width=20, padx=10, pady=10, bg=DARK_THEME)
+scale_label.place(relx=0.15, rely=0.25, anchor=CENTER)
+
+#Scale Menu
+default_scale_menu_value = StringVar()
+default_scale_menu_value.set("Random")
+
+scale_menu_options = ["Random"] + notes_list
+scale_menu = OptionMenu(window, default_scale_menu_value, *scale_menu_options)
+scale_menu.config(width=10, padx=10, pady=10, bg=DARK_THEME, fg=WHITE_BUTTON_TEXT, font=("Agency FB", 24))
+scale_menu.place(relx=0.25, rely=0.25, anchor=CENTER)
+
+dropdown_menu = scale_menu["menu"]
+dropdown_menu.config(font=("Agency FB", 24))
 
 #Create button
 create_button = Button(text="New Question", fg=WHITE_BUTTON_TEXT, font=FONT, command=create_button_clicked)
-create_button.config(padx=30, pady=30, bg=DARK_THEME)
+create_button.config(padx=10, pady=10, bg=DARK_THEME)
 create_button.place(relx=0.65, rely=0.25, anchor=CENTER)
 
 #Play button
-play_button = Button(text="Play", fg=WHITE_BUTTON_TEXT, font=FONT, command=play_button_clicked)
-play_button.config(width=8, padx=30, pady=30, bg=DARK_THEME)
+play_button = Button(text="Play", fg="Red", font=FONT, command=play_button_clicked)
+play_button.config(width=8, padx=10, pady=10, bg=DARK_THEME)
 play_button.place(relx=0.85, rely=0.25, anchor=CENTER)
 
 #Notes input
@@ -152,7 +150,7 @@ notes_input.place(relx=0.75, rely=0.5, anchor=CENTER)
 
 #Submit button
 submit_button = Button(text="Submit", fg=WHITE_BUTTON_TEXT, font=FONT, command=submit_button_clicked)
-submit_button.config(width=10, padx=30, pady=30, bg=DARK_THEME)
+submit_button.config(width=10, padx=10, pady=10, bg=DARK_THEME)
 submit_button.place(relx=0.75, rely=0.75, anchor=CENTER)
 
 
