@@ -2,6 +2,9 @@ from scamp import *
 from random import *
 from tkinter import *
 from tkinter import messagebox
+from matplotlib.figure import Figure
+from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg,
+NavigationToolbar2Tk)
 
 #######################################Data###########################################
 
@@ -90,6 +93,7 @@ def play_question():
             piano.play_note(note, 1, 1)
 
 def check_answer(answer):
+    if len(answer) != len(question["names"]): return 0
     if answer == question["names"]: return 2
 
     relative_answer = []
