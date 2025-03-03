@@ -127,6 +127,7 @@ def play_button_clicked():
     else: messagebox.showinfo("Click \"New Question\" Button", "Please Create a Question Before Clicking the \"Play\" Button")
 
 def submit_button_clicked():
+    plot()
     user_answer = notes_input.get()
     user_answer = user_answer.upper()
     user_answer = user_answer.split()
@@ -137,6 +138,27 @@ def submit_button_clicked():
 
     print("user_answer:", user_answer)
     print("check", check)
+
+
+def plot():
+    fig = Figure(figsize=(5, 5),
+                 dpi=100)
+
+    y = [i ** 2 for i in range(101)]
+
+    plot1 = fig.add_subplot(111)
+
+    plot1.plot(y)
+
+    canvas = FigureCanvasTkAgg(fig, master=window)
+    canvas.draw()
+
+    canvas.get_tk_widget().place(relx=0.5, rely=0.5, anchor=CENTER)
+
+    toolbar = NavigationToolbar2Tk(canvas, window)
+    toolbar.update()
+
+    canvas.get_tk_widget().place(relx=0.5, rely=0.5, anchor=CENTER)
 
 ############################################UI##################################
 
