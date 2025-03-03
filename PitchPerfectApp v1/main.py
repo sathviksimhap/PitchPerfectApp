@@ -3,6 +3,7 @@ from random import *
 from tkinter import *
 from tkinter import messagebox
 from matplotlib.figure import Figure
+import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg,
 NavigationToolbar2Tk)
 
@@ -103,6 +104,9 @@ def check_answer(answer):
     for note in question["names"]:
         relative_question.append(notes_freq[note][0])
 
+    y_vals = relative_question + relative_answer
+    plot(y_vals)
+
     relative = []
     i = 0
     while i < len(relative_question):
@@ -127,7 +131,6 @@ def play_button_clicked():
     else: messagebox.showinfo("Click \"New Question\" Button", "Please Create a Question Before Clicking the \"Play\" Button")
 
 def submit_button_clicked():
-    plot()
     user_answer = notes_input.get()
     user_answer = user_answer.upper()
     user_answer = user_answer.split()
@@ -140,25 +143,34 @@ def submit_button_clicked():
     print("check", check)
 
 
-def plot():
-    fig = Figure(figsize=(5, 5),
-                 dpi=100)
+def plot(y_vals):
+    fig = Figure(figsize=(5, 5),dpi=100)
 
-    y = [i ** 2 for i in range(101)]
+    print(y_vals)
+    x_vals = [0, 1, 2]
+    q_y_vals = y_vals[:3]
+    print(q_y_vals)
+    a_y_vals = y_vals[3:]
+    print(a_y_vals)
 
+
+
+    fig = plt.figure(figsize=(5, 5))
     plot1 = fig.add_subplot(111)
+    plot1.scatter(x_vals, q_y_vals, color="grey", s=1000, marker="s")
+    plot1.scatter(x_vals, a_y_vals, color="green", s=1000, marker="s")
 
-    plot1.plot(y)
+    plt.ylabel("Notes", fontsize=12)
+    plt.title("Correct Answer(Grey) vs Your Answer", fontsize=14)
+
+    plt.xticks([])
+    # plt.yticks()
 
     canvas = FigureCanvasTkAgg(fig, master=window)
     canvas.draw()
 
-    canvas.get_tk_widget().place(relx=0.5, rely=0.5, anchor=CENTER)
+    canvas.get_tk_widget().place(relx=0.25, rely=0.6, anchor=CENTER)
 
-    toolbar = NavigationToolbar2Tk(canvas, window)
-    toolbar.update()
-
-    canvas.get_tk_widget().place(relx=0.5, rely=0.5, anchor=CENTER)
 
 ############################################UI##################################
 
@@ -198,7 +210,7 @@ dropdown_menu.config(font=("Agency FB", 24))
 #Correct Label
 correct_label = Label(text="", fg=WHITE_BUTTON_TEXT, font=("Agency FB", 96))
 correct_label.config(width=20, padx=10, pady=10, bg=DARK_THEME)
-correct_label.place(relx=0.2, rely=0.8, anchor=CENTER)
+correct_label.place(relx=0.5, rely=0.5, anchor=CENTER)
 
 #Create button
 create_button = Button(text="New Question", fg=WHITE_BUTTON_TEXT, font=FONT, command=create_button_clicked)
