@@ -32,6 +32,17 @@ modes = {
     "hard": 3
 }
 
+graph_reference_notes = {
+    48: "C",  49: "C#", 50: "D",  51: "D#", 52: "E",  53: "F",  54: "F#", 55: "G",
+    56: "G#", 57: "A",  58: "A#", 59: "B",  60: "C",  61: "C#", 62: "D",  63: "D#",
+    64: "E",  65: "F",  66: "F#", 67: "G",  68: "G#", 69: "A",  70: "A#", 71: "B",
+    72: "C",  73: "C#", 74: "D",  75: "D#", 76: "E",  77: "F",  78: "F#", 79: "G",
+    80: "G#", 81: "A",  82: "A#", 83: "B",  84: "C",  85: "C#", 86: "D",  87: "D#",
+    88: "E",  89: "F",  90: "F#", 91: "G",  92: "G#", 93: "A",  94: "A#", 95: "B",
+    96: "C",  97: "C#", 98: "D",  99: "D#", 100: "E", 101: "F", 102: "F#", 103: "G",
+    104: "G#", 105: "A", 106: "A#", 107: "B"
+}
+
 answer_status = ["Wrong!", "Almost!", "Correct!"]
 
 colours = ["red", "yellow", "green"]
@@ -142,18 +153,21 @@ def submit_button_clicked():
     print("user_answer:", user_answer)
     print("check", check)
 
-
 def plot(y_vals):
     fig = Figure(figsize=(5, 5),dpi=100)
 
     print(y_vals)
     x_vals = [0, 1, 2]
     q_y_vals = y_vals[:3]
-    print(q_y_vals)
+    # print(q_y_vals)
     a_y_vals = y_vals[3:]
-    print(a_y_vals)
+    # print(a_y_vals)
 
+    graph_sub = []
+    for val in y_vals:
+        graph_sub.append(graph_reference_notes[val])
 
+    print(graph_sub)
 
     fig = plt.figure(figsize=(5, 5))
     plot1 = fig.add_subplot(111)
@@ -164,13 +178,12 @@ def plot(y_vals):
     plt.title("Correct Answer(Grey) vs Your Answer", fontsize=14)
 
     plt.xticks([])
-    # plt.yticks()
+    plt.yticks(y_vals, graph_sub)
 
     canvas = FigureCanvasTkAgg(fig, master=window)
     canvas.draw()
 
     canvas.get_tk_widget().place(relx=0.25, rely=0.6, anchor=CENTER)
-
 
 ############################################UI##################################
 
