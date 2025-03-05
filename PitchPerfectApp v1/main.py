@@ -4,8 +4,7 @@ from tkinter import *
 from tkinter import messagebox
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
-from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg,
-NavigationToolbar2Tk)
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 #######################################Data###########################################
 
@@ -48,7 +47,6 @@ answer_status = ["Wrong!", "Almost!", "Correct!"]
 colours = ["red", "yellow", "green"]
 
 # Global Variables
-
 fig = None
 canvas = None
 question = {"notes": [], "names": []}
@@ -142,8 +140,6 @@ def create_button_clicked():
     your_answer_label.config(text="")
     clear_plots()
 
-    print("Question:", question["names"])
-
 def play_button_clicked():
     if question["notes"]: play_question()
     else: messagebox.showinfo("Click \"New Question\" Button", "Please Create a Question Before Clicking the \"Play\" Button")
@@ -171,25 +167,17 @@ def submit_button_clicked():
     correct_answer_label.config(text=questions_string)
     your_answer_label.config(text=user_answer_string)
 
-    print("user_answer:", user_answer)
-    print("check", check)
-
 def plot(y_vals):
     global fig, canvas
     fig = Figure(figsize=(5, 5),dpi=100)
 
-    print(y_vals)
     x_vals = [0, 1, 2]
     q_y_vals = y_vals[:3]
-    # print(q_y_vals)
     a_y_vals = y_vals[3:]
-    # print(a_y_vals)
 
     graph_sub = []
     for val in y_vals:
         graph_sub.append(graph_reference_notes[val])
-
-    print(graph_sub)
 
     fig = plt.figure(figsize=(5, 5))
     plot1 = fig.add_subplot(111)
@@ -279,6 +267,5 @@ notes_input.place(relx=0.75, rely=0.5, anchor=CENTER)
 submit_button = Button(text="Submit", fg=WHITE_BUTTON_TEXT, font=FONT, command=submit_button_clicked)
 submit_button.config(width=10, padx=10, pady=10, bg=DARK_THEME)
 submit_button.place(relx=0.75, rely=0.75, anchor=CENTER)
-
 
 window.mainloop()
