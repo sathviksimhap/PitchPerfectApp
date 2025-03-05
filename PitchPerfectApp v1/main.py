@@ -49,6 +49,8 @@ colours = ["red", "yellow", "green"]
 
 # Global Variables
 
+fig = None
+canvas = None
 question = {"notes": [], "names": []}
 scale = {"key": "", "octave": -1, "notes": []}
 
@@ -134,7 +136,12 @@ def create_button_clicked():
     new_scale(key)
     gen_question()
     play_button.config(fg="Green")
+
     correct_label.config(text="")
+    correct_answer_label.config(text="")
+    your_answer_label.config(text="")
+    clear_plots()
+
     print("Question:", question["names"])
 
 def play_button_clicked():
@@ -147,13 +154,28 @@ def submit_button_clicked():
     user_answer = user_answer.split()
     notes_input.delete(0, END)
 
+    if not user_answer:
+        messagebox.showinfo("", "Enter Your Answer in the Textbox to Submit")
+        return
+
     check = check_answer(user_answer)
     correct_label.config(text=answer_status[check], fg=colours[check])
+
+    questions_string = "Correct Answer:\n"
+    for elem in question["names"]:
+        questions_string += elem + " "
+    user_answer_string = "Your Answer:\n"
+    for elem in user_answer:
+        user_answer_string += elem + " "
+
+    correct_answer_label.config(text=questions_string)
+    your_answer_label.config(text=user_answer_string)
 
     print("user_answer:", user_answer)
     print("check", check)
 
 def plot(y_vals):
+    global fig, canvas
     fig = Figure(figsize=(5, 5),dpi=100)
 
     print(y_vals)
@@ -183,7 +205,11 @@ def plot(y_vals):
     canvas = FigureCanvasTkAgg(fig, master=window)
     canvas.draw()
 
-    canvas.get_tk_widget().place(relx=0.25, rely=0.6, anchor=CENTER)
+    canvas.get_tk_widget().place(relx=0.2, rely=0.6, anchor=CENTER)
+
+def clear_plots():
+    fig.clf()
+    canvas.get_tk_widget().destroy()
 
 ############################################UI##################################
 
@@ -206,7 +232,7 @@ title_label.place(relx=0.5, rely=0.02, anchor=CENTER)
 # Scale label
 scale_label = Label(text="Scale:", fg=WHITE_BUTTON_TEXT, font=FONT)
 scale_label.config(width=20, padx=10, pady=10, bg=DARK_THEME)
-scale_label.place(relx=0.15, rely=0.25, anchor=CENTER)
+scale_label.place(relx=0.1, rely=0.25, anchor=CENTER)
 
 #Scale Menu
 default_scale_menu_value = StringVar()
@@ -215,15 +241,25 @@ default_scale_menu_value.set("Random")
 scale_menu_options = ["Random"] + notes_list
 scale_menu = OptionMenu(window, default_scale_menu_value, *scale_menu_options)
 scale_menu.config(width=8, padx=10, pady=10, bg=DARK_THEME, fg=WHITE_BUTTON_TEXT, font=FONT)
-scale_menu.place(relx=0.27, rely=0.25, anchor=CENTER)
+scale_menu.place(relx=0.22, rely=0.25, anchor=CENTER)
 
 dropdown_menu = scale_menu["menu"]
 dropdown_menu.config(font=("Agency FB", 24))
 
 #Correct Label
 correct_label = Label(text="", fg=WHITE_BUTTON_TEXT, font=("Agency FB", 96))
-correct_label.config(width=20, padx=10, pady=10, bg=DARK_THEME)
-correct_label.place(relx=0.5, rely=0.5, anchor=CENTER)
+correct_label.config(padx=10, pady=10, bg=DARK_THEME)
+correct_label.place(relx=0.45, rely=0.25, anchor=CENTER)
+
+#Correct Answer Label
+correct_answer_label = Label(text="", fg=WHITE_BUTTON_TEXT, font=("Agency FB", 48))
+correct_answer_label.config(width=20, padx=10, pady=10, bg=DARK_THEME)
+correct_answer_label.place(relx=0.45, rely=0.5, anchor=CENTER)
+
+#Your Answer Label
+your_answer_label = Label(text="", fg=WHITE_BUTTON_TEXT, font=("Agency FB", 48))
+your_answer_label.config(width=20, padx=10, pady=10, bg=DARK_THEME)
+your_answer_label.place(relx=0.45, rely=0.75, anchor=CENTER)
 
 #Create button
 create_button = Button(text="New Question", fg=WHITE_BUTTON_TEXT, font=FONT, command=create_button_clicked)
