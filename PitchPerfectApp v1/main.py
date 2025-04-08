@@ -196,6 +196,7 @@ def plot(y_vals):
     canvas.get_tk_widget().place(relx=0.2, rely=0.6, anchor=CENTER)
 
 def clear_plots():
+    global fig, canvas
     fig.clf()
     canvas.get_tk_widget().destroy()
 
