@@ -105,8 +105,6 @@ def play_question():
             piano.play_note(note, 1, 1)
 
 def check_answer(answer):
-    if len(answer) != len(question["names"]): return 0
-    if answer == question["names"]: return 2
 
     relative_answer = []
     for note in answer:
@@ -117,6 +115,9 @@ def check_answer(answer):
 
     y_vals = relative_question + relative_answer
     plot(y_vals)
+
+    if len(answer) != len(question["names"]): return 0
+    if answer == question["names"]: return 2
 
     relative = []
     i = 0
